@@ -1,23 +1,31 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const cors = require("cors");
+
 const app = express();
-app.use(cors());
 app.use(express.json());
+app.use(cors());
+//DB URL
+const CONNECTION_URL =
+  "mongodb+srv://syed:7275456455@cluster0.hlj0c.mongodb.net/CRUDAPP?retryWrites=true&w=majority";
 
-app.get("/", (req, res) => {
-  res.status(200).send({ name: "John", age: "54" });
-});
+//Connection to DB
+mongoose.connect(
+  CONNECTION_URL,
+  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
+  () => {
+    console.log("Connected to DB");
+  }
+);
 
-app.get("/unverified", (req, res) => {
-  res.status(400).send({ msg: "Not Verified" });
-});
+const userCreate = require("./routes/create.js");
+const getUser = require("./routes/get.js");
+const updateUser = require("./routes/update.js");
+const deleteUser = require("./routes/delete.js");
 
-app.post("/", (req, res) => {
-  res.status(200).send({ name: req.body.name });
-});
+app.use("/", getUser);
+app.use("/create", userCreate);
+app.use("/update", updateUser);
+app.use("/delete", deleteUser);
 
-app.post("/verify", (req, res) => {
-  res.status(200).send({ token: req.headers.token });
-});
-
-app.listen(4000);
+app.listen(5000, () => console.log("Server Runnning"));
