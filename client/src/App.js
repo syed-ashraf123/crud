@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Cards from "./Cards";
 import Axios from "axios";
+import Create from "./Create.js";
 function App() {
   const [details, setDetails] = useState([]);
   const get = async () => {
@@ -15,6 +16,7 @@ function App() {
   }, []);
   return (
     <div className="App">
+      <Create />
       {details.map((result) => (
         <Cards
           name={result.name}
