@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
+import { useState } from "react";
 import Axios from "axios";
 const useStyles = makeStyles({
   root: {
-    width: 300,
+    minWidth: 300,
   },
   bullet: {
     display: "inline-block",
@@ -26,41 +27,35 @@ export default function Create() {
   const [age1, setAge] = useState(null);
   const [city1, setCity] = useState(null);
   const [country1, setCountry] = useState(null);
-  const creates = () => {
-    Axios.post("http://localhost:5000/create", {
+
+  const postData = () => {
+    const data = {
       name: name1,
       age: age1,
       city: city1,
       country: country1,
-    }).then((response) => {
+    };
+    Axios.post("http://localhost:5000/create", data).then((res) => {
       window.location.reload();
     });
   };
+
   return (
     <Card className={classes.root} style={{ float: "left" }}>
       <p>
-        Name :
-        <input value={name1} onChange={(e) => setName(e.target.value)} />
+        Name <input value={name1} onChange={(e) => setName(e.target.value)} />
       </p>
       <p>
-        Age :
-        <input value={age1} onChange={(e) => setAge(e.target.value)} />
+        Age <input value={age1} onChange={(e) => setAge(e.target.value)} />
       </p>
       <p>
-        City :<input value={city1} onChange={(e) => setCity(e.target.value)} />
+        City <input value={city1} onChange={(e) => setCity(e.target.value)} />
       </p>
       <p>
-        Country :
+        Country{" "}
         <input value={country1} onChange={(e) => setCountry(e.target.value)} />
       </p>
-
-      <button
-        onClick={() => {
-          creates();
-        }}
-      >
-        Create
-      </button>
+      <button onClick={() => postData()}>Submit</button>
     </Card>
   );
 }
